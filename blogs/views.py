@@ -23,3 +23,11 @@ def posts_by_category(request, category_id):
     }
     return render(request, "posts_by_category.html", context)
 
+def blog_detail(request, slug):
+	single_blog = get_object_or_404(Blog, slug=slug, status="Published")
+	context = {
+		"single_blog": single_blog,
+	}
+	return render(request, "blog_detail.html", context)
+
+
