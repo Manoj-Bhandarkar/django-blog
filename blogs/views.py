@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, render
 
 from .models import Blog, Category
 
@@ -8,13 +8,18 @@ def posts_by_category(request, category_id):
     posts = Blog.objects.filter(status="Published", category=category_id)
     # based on the category_id fetch name from Category model
     # category DoesNotExit redirect to home page
-    try:
-        category = Category.objects.get(pk=category_id)
-    except:
-        return redirect("home")
+    # try:
+    # category = Category.objects.get(pk=category_id)
+    # except:
+    #     return redirect("home")
+
+	# use get_object_or_404 when you want show 404 error page instead of redirecting
+    # 404 approach	
+    category = get_object_or_404(Category, pk=category_id)
 
     context = {
         "posts": posts,
         "category": category,
     }
     return render(request, "posts_by_category.html", context)
+
