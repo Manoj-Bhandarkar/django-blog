@@ -37,7 +37,9 @@
                     <a class="btn btn-sm btn-warning" href="{% url 'login' %}">Login</a> &nbsp;
                     <a class="btn btn-sm btn-outline-secondary" href="{% url 'register' %}">Register</a>
                     {% else %}
-                    <span>Welcome, {{ user.username }}!</span> &nbsp;
+                    <span class="mr-2">
+                        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-warning">Dashboard</a>
+                    </span> &nbsp;
                     <!-- user available from Django auth as context processor -->
                     <a class="btn btn-sm btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
                     {% endif %}
