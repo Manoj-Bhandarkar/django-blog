@@ -50,8 +50,7 @@ def login(request):
             user = auth.authenticate(request, username=username, password=password)
             if user is not None:
                 auth.login(request, user)
-                print("Login successful")
-            return redirect("home")
+            return redirect("dashboard")
     form = AuthenticationForm()
     context = {
         "form": form,
