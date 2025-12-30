@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
-
 
 <div class="row">
     <!-- Left Sidebar -->
@@ -10,7 +7,6 @@
     {% include 'dashboards/sidebar.html' %}
 
     <!-- Main Content Area -->
-
     <div class="col-md-9">
         <h2>All Categories</h2>
         <a href="{% url 'add_category' %}" class="btn btn-dark text-light float-right mb-2">Add Category</a>
@@ -33,7 +29,7 @@
                     <td>{{category.created_at}}</td>
                     <td>{{category.updated_at}}</td>
                     <td>
-                        <a href=""> <i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
+                        <a href="{% url 'edit_category' category.id %}"><i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
                         <a href=""> <i class="fa fa-trash text-danger"></i></a>
                     </td>
                 </tr>
