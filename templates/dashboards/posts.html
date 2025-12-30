@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row">
+    <!-- Left Sidebar -->
+    <!-- Load the sidebar here -->
+    {% include 'dashboards/sidebar.html' %}
+
+    <!-- Main Content Area -->
+    <div class="col-md-9">
+        <h2>All Posts</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                    <th>Featured</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{post.title}}</td>
+                    <td>{{post.category}}</td>
+                    <td>{{post.author}}</td>
+                    <td>{{post.status}}</td>
+                    <td>{% if post.is_featured %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <a href=""><i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
+                        <a href=""><i class="fa fa-trash text-danger"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

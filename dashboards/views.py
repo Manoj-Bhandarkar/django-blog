@@ -54,4 +54,10 @@ def delete_category(request, pk):
     category.delete()
     return redirect('categories')
     
+def posts(request):
+    posts = Blog.objects.filter(status="Published")
+    context = {
+        'posts': posts
+    }
+    return render(request, 'dashboards/posts.html', context)
     
