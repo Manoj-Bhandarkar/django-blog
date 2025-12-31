@@ -75,3 +75,26 @@ def add_post(request):
         form = PostForm()
         context = {"form": form}
     return render(request, "dashboards/add_post.html", context)
+
+@login_required(login_url="login")
+def edit_post(request, pk):
+    post = get_object_or_404(Blog, pk=pk)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save()
+            title = form.cleaned_data["title"]  # Update slug using title
+            post.slug = slugify(title) + "-" + str(post.id) # Update slug if title changed
+            post.save()
+            return redirect("posts")
+    else:
+        form = PostForm(instance=post)
+    context = {"form": form, "post": post}
+    return render(request, "dashboards/edit_post.html", context)        
+
+@login_required(login_url="login")
+def delete_post(request, pk):
+    post = get_object_or_404(Blog, pk=pk)
+    post.delete()
+    return redirect("posts")
+
