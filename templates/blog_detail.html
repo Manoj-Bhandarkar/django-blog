@@ -45,6 +45,7 @@
                     {% endif %}
                     <br>
                     <div class="form-group">
+                        {% if user.is_authenticated %}
                         <form action="" method="POST">
                             {% csrf_token %}
                             <div class="from-group">
@@ -54,6 +55,9 @@
                                 <input type="submit" value="submit" class="btn btn-primary mt-2">
                             </div>
                         </form>
+                        {% else %}
+                        <p>Please <a href="{% url 'login' %}">login</a> to add a comment.</p>
+                        {% endif %}
                     </div>
                 </section>
             </article>
