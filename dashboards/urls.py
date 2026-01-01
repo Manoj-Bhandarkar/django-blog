@@ -15,4 +15,7 @@ urlpatterns = [
     path('post/delete/<int:pk>/', views.delete_post, name='delete_post'),
     # User Management
     path('users/', views.users, name='users'),
+    path('users/add/', views.add_user, name='add_user'),
+    path('users/edit/<int:pk>/', views.edit_user, name='edit_user'),
+    path('users/delete/<int:pk>/', views.delete_user, name='delete_user'),
  ]
