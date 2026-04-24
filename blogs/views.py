@@ -1,14 +1,20 @@
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Blog, Category, Comment
+from .models import Blog, Category, Comment, Status
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def posts_by_category(request, category_id):
-    posts = Blog.objects.filter(status="Published", category=category_id)
+    posts = Blog.objects.select_related("category", "author").filter(
+        status=Status.PUBLISHED, category_id=category_id
+    )
 
     category = get_object_or_404(Category, pk=category_id)
-
+    paginator = Paginator(posts, 5)
+    page = request.GET.get("page")
+    posts = paginator.get_page(page)
     context = {
         "posts": posts,
         "category": category,
@@ -17,16 +23,32 @@ def posts_by_category(request, category_id):
 
 
 def blog_detail(request, slug):
-    single_blog = get_object_or_404(Blog, slug=slug, status="Published")
+    single_blog = get_object_or_404(
+        Blog.objects.select_related("category", "author"),
+        slug=slug,
+        status=Status.PUBLISHED,
+    )
+
     if request.method == "POST":
         comment = Comment()
-        comment.user = request.user
+        if request.user.is_authenticated:
+            comment.user = request.user
+        else:
+            return redirect(f"/login/?next={request.path}")
         comment.blog = single_blog
-        comment.comment = request.POST["comment"]
-        comment.save()
+        content = request.POST.get("comment", "").strip()
+        if content:
+            comment.comment = content
+            messages.success(request, "Comment submitted for approval")
+            comment.save()
+
         return HttpResponseRedirect(request.path_info)
     # comment section
-    comments = Comment.objects.filter(blog=single_blog)
+    comments = (
+        Comment.objects.select_related("user")
+        .filter(blog=single_blog, is_approved=True)
+        .order_by("-created_at")
+    )
     context = {
         "single_blog": single_blog,
         "comments": comments,
@@ -41,11 +63,14 @@ def blog_search(request):
             Q(title__icontains=keyword)
             | Q(short_description__icontains=keyword)
             | Q(blog_body__icontains=keyword),
-            status="Published",
+            status=Status.PUBLISHED,
         )
         if keyword
-        else []
+        else Blog.objects.none()
     )
+    paginator = Paginator(blogs, 5)
+    page = request.GET.get('page')
+    blogs = paginator.get_page(page)
     context = {
         "blogs": blogs,
         "keyword": keyword,

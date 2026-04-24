@@ -1,18 +1,21 @@
 from django.shortcuts import redirect, render
 from about.models import About
 from .forms import RegistrationForm
-from blogs.models import Category, Blog
+from blogs.models import Blog, Status
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.core.paginator import Paginator
 
 def home(request):
-    featured_posts = Blog.objects.filter(is_featured=True, status="Published").order_by(
-        "created_at"
+    featured_posts = Blog.objects.select_related('category', 'author').filter(is_featured=True, status=Status.PUBLISHED).order_by(
+        "-created_at"
     )
-    posts = Blog.objects.filter(is_featured=False, status="Published").order_by(
-        "created_at"
+    posts = Blog.objects.select_related('category', 'author').filter(is_featured=False, status=Status.PUBLISHED).order_by(
+        "-created_at"
     )
+    paginator = Paginator(posts, 5)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     # fetch about us information
     try:
         about = About.objects.get()
@@ -32,7 +35,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, "registration_success.html")
+            return redirect("login")
     else:
         form = RegistrationForm()
     context = {
@@ -50,8 +53,10 @@ def login(request):
             user = auth.authenticate(request, username=username, password=password)
             if user is not None:
                 auth.login(request, user)
-            return redirect("dashboard")
-    form = AuthenticationForm()
+                return redirect("dashboard")
+            messages.error(request, "Invalid username or password")
+    else:   
+        form = AuthenticationForm()
     context = {
         "form": form,
     }
