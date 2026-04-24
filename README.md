@@ -1,65 +1,83 @@
-# 📝 Full Stack Blog Platform (Django + DRF)
+# 📝 Django Blog Management System
+
+A full-featured Blog Web Application + REST API built using Django and Django REST Framework.
 
 ## 🚀 Overview
+Public blog website
+Admin-style dashboard (custom, not Django admin)
+Authentication system
+Role-based access (simple: User / Staff / Superuser)
+REST API with JWT authentication
 
-A production-ready full-stack blog application with a **Django REST Framework backend**.
-Implements secure JWT authentication, role-based access control, and scalable API architecture.
 
----
 ## 🔗 Live Demo
 * ⚛️ Live App: https://blog.manojbhandarkar.cloud
 * 📘 API Docs (Swagger): https://blog.manojbhandarkar.cloud/swagger/
 ---
 
-## 🧰 Tech Stack
-
-### Backend
-* Django
-* Django REST Framework (DRF)
-* JWT Authentication (SimpleJWT)
-* Swagger (drf-yasg)
-
-### Deployment
-* Render (Backend)
-* Hostinger (Domain + DNS)
+🚀 Features
 ---
+🌐 Frontend (User Side)
+View all blog posts
+Filter posts by category
+Search blogs
+View blog details
+Add comments (approval required)
+Pagination support
 
-## 🔐 Authentication
 
-### Login
-`POST /api/login/`
-```json
-{
-  "username": "your_username",
-  "password": "your_password"
-}
-```
-### Response
-```json
-{
-  "access": "jwt_access_token",
-  "refresh": "jwt_refresh_token",
-  "username": "user",
-  "email": "user@email.com"
-}
-```
-### Register
-`POST /api/register/`
-```json
-{
-  "username": "user",
-  "email": "user@email.com",
-  "password": "password"
-}
-```
-### Refresh Token
-`POST /api/token/refresh/`
+🔐 Authentication
 ---
+User Registration
+Login / Logout
+JWT Authentication (for API)
+
+
+📊 Dashboard (Custom Admin Panel)
+---
+👤 Normal User
+Access dashboard
+Add blog posts
+Edit own posts
+
+🧑‍💼 Staff User (is_staff=True)
+Manage categories (Add/Edit/Delete)
+Manage all blog posts
+Manage users (Add/Edit/Delete)
+
+👑 Superuser (is_superuser=True)
+Full access
+Access user listing page
+
+----
+🧩 Blog Features
+---
+Slug-based URLs (SEO friendly)
+Featured posts
+Draft / Published status
+Image uploads
+Category system
+
+---
+💬 Comment System
+---
+Authenticated users can comment
+Comments require admin approval
+Ordered by latest
+
+---
+🔌 REST API (Django REST Framework)
+---
+Authentication
+JWT-based login
+Register via API
 
 ## 📚 API Endpoints
 
 | Method | Endpoint         | Description            |
 | ------ | ---------------- | ---------------------- |
+| POST   | /api/register/   | Register user          |
+| POST   | /api/login/      | Get JWT token          |
 | GET    | /api/posts/      | List posts (paginated) |
 | POST   | /api/posts/      | Create post            |
 | GET    | /api/posts/{id}/ | Retrieve post          |
@@ -67,11 +85,52 @@ Implements secure JWT authentication, role-based access control, and scalable AP
 | DELETE | /api/posts/{id}/ | Delete post            |
 ---
 
-## 🔒 Authorization
-Use JWT token in header:
-```
-Authorization: Bearer <access_token>
-```
+🛠️ Tech Stack
+---
+Python
+Django
+Django REST Framework
+SQLite (default)
+Bootstrap 4
+Crispy Forms
+JWT (SimpleJWT)
+
+📁 Project Structure
+---
+blog_main/
+│
+├── blogs/           # Blog app (models, views, API)
+├── dashboards/      # Custom admin dashboard
+├── about/           # About & social links
+├── templates/       # HTML templates
+├── static/          # Static files
+├── media/           # Uploaded images
+│
+└── manage.py
+---
+
+⚙️ Installation
+---
+1. Clone repository
+git clone https://github.com/your-username/blog-project.git
+cd blog-project
+
+2. Create virtual environment
+python -m venv venv
+venv\Scripts\activate   # Windows
+
+3. Install dependencies
+pip install -r requirements.txt
+
+4. Run migrations
+python manage.py makemigrations
+python manage.py migrate
+
+5. Create superuser
+python manage.py createsuperuser
+
+6. Run server
+python manage.py runserver
 
 ## ✨ Features
 * 🔐 JWT Authentication (Login + Refresh)
@@ -84,14 +143,18 @@ Authorization: Bearer <access_token>
 * 🌐 Full-stack deployment with custom domain
 ---
 
-## ⚙️ Backend Setup
-```bash
-git clone <your-backend-repo>
-cd backend
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
+🔐 Permissions Summary
+---------------------------------------------------
+| Action            | User   | Staff  | Superuser |
+| ----------------- | ------ | ------ | --------- |
+| Add Post	        |  ✅	   |  ✅	  |  ✅       |
+| Edit Own Post	    |  ✅	   |  ✅	  |  ✅       |
+| Edit Any Post	    |  ❌	   |  ✅	  |  ✅       |
+| Delete Post	      |  ❌	   |  ✅	  |  ✅       |
+| Manage Categories |  ❌	   |  ✅	  |  ✅       |
+| Manage Users	    |  ❌	   |  ✅	  |  ✅       |
+| View Users Page	  |  ❌	   |  ❌	  |  ✅       |
+----------------------------------------------------
 
 ## 👨‍💻 Author
 
