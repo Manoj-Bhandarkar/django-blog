@@ -4,7 +4,7 @@ from .forms import RegistrationForm
 from blogs.models import Category, Blog
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth
-
+from django.core.paginator import Paginator
 
 def home(request):
     featured_posts = Blog.objects.filter(is_featured=True, status="Published").order_by(
