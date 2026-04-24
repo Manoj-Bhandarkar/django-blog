@@ -2,7 +2,7 @@ from .models import Category
 from about.models import SocialLink
 
 def get_categories(request):
-    categories = Category.objects.all()
+    categories = Category.objects.only("id", "category_name", "slug")
     return dict(categories=categories)
 
 def get_social_links(request):

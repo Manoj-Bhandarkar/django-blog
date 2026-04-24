@@ -27,7 +27,7 @@ def blog_detail(request, slug):
         Blog.objects.select_related("category", "author"),
         slug=slug,
         status=Status.PUBLISHED,
-    )
+    ).prefetch_related("comments__user")
 
     if request.method == "POST":
         comment = Comment()

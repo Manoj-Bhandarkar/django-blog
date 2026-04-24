@@ -17,7 +17,7 @@ class PostForm(forms.ModelForm):
 class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "is_staff", "is_active", "is_superuser", "user_permissions", "groups")
+        fields = ("username", "email", "first_name", "last_name", "is_staff", "is_active")
 
 
 class EditUserForm(forms.ModelForm):
