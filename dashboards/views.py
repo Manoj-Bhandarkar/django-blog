@@ -133,7 +133,7 @@ def users(request):
 
 @login_required(login_url="login")
 def add_user(request):
-    if not request.user.is_staff:
+    if not request.user.is_superuser:
         return redirect("dashboard")
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -150,7 +150,7 @@ def add_user(request):
 
 @login_required(login_url="login")
 def edit_user(request, pk):
-    if not request.user.is_staff:
+    if not request.user.is_superuser:
         return redirect("dashboard")
     user = get_object_or_404(User, pk=pk)
     if request.method == "POST":
