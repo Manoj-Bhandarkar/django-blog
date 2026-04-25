@@ -24,10 +24,10 @@ def posts_by_category(request, category_id):
 
 def blog_detail(request, slug):
     single_blog = get_object_or_404(
-        Blog.objects.select_related("category", "author"),
+        Blog.objects.select_related("category", "author").prefetch_related("comments__user"),
         slug=slug,
         status=Status.PUBLISHED,
-    ).prefetch_related("comments__user")
+    )
 
     if request.method == "POST":
         comment = Comment()
