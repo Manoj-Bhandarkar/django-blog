@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -30,17 +30,17 @@ class CustomLoginView(TokenObtainPairView):
 # ---------------- BLOG VIEWSET ----------------  
 class BlogViewSet(ModelViewSet):
     serializer_class = BlogSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         user = self.request.user
 
         # Staff can see all
-        if user.is_staff:
+        if user.is_staff and user.is_authenticated:
             return Blog.objects.all()
 
         # Normal users → only own posts
-        return Blog.objects.filter(author=user)
+        return Blog.objects.filter(status="published")
     
     def perform_create(self, serializer):
             serializer.save(author=self.request.user)
