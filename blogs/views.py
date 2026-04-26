@@ -24,7 +24,9 @@ def posts_by_category(request, category_id):
 
 def blog_detail(request, slug):
     single_blog = get_object_or_404(
-        Blog.objects.select_related("category", "author").prefetch_related("comments__user"),
+        Blog.objects.select_related("category", "author").prefetch_related(
+            "comments__user"
+        ),
         slug=slug,
         status=Status.PUBLISHED,
     )
@@ -57,19 +59,19 @@ def blog_detail(request, slug):
 
 
 def blog_search(request):
-    keyword = request.GET.get("keyword")
-    blogs = (
-        Blog.objects.filter(
+    keyword = request.GET.get("keyword").strip()
+    if keyword:
+        blogs = Blog.objects.filter(
             Q(title__icontains=keyword)
             | Q(short_description__icontains=keyword)
             | Q(blog_body__icontains=keyword),
             status=Status.PUBLISHED,
-        )
-        if keyword
-        else Blog.objects.none()
-    )
+        ).select_related("category", "author")
+    else:
+        blogs = Blog.objects.none()
+
     paginator = Paginator(blogs, 5)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     blogs = paginator.get_page(page)
     context = {
         "blogs": blogs,

@@ -55,6 +55,7 @@
             <nav class="nav d-flex justify-content-between">
                 {% for cat in categories %}
                 <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}">{{ cat.category_name }}</a>
+                <span class="badge badge-secondary">{{ cat.blogs.count }}</span>
                 {% endfor %}
             </nav>
         </div>

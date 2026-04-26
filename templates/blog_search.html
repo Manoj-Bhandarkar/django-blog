@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="mb-4">
-{{ keyword }} Search Results
+    {% if keyword %}
+        <h3>Search Results for "{{ keyword }}"</h3>
+    {% else %}
+        <h3>All Published Posts</h3>
+    {% endif %}
 </div>
 {% if blogs %}
 {% for blog in blogs %}

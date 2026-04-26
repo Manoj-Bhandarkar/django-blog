@@ -27,7 +27,7 @@
                 <!-- Post content-->
                 <section class="mb-5">
                     <p class="fs-5 mb-4">{{ single_blog.short_description }}</p>
-                    <p class="fs-5 mb-4">{{ single_blog.blog_body }}</p>
+                    <p class="fs-5 mb-4">{{ single_blog.blog_body | linebreaks }}</p>
                     <!-- Comments section  -->
 
                     <h4 class="fw-bolder mb-4 ">Comments ({{ comments.count }})</h4>
@@ -76,6 +76,7 @@
                             <ul class="list-unstyled mb-0">
                                 {% for cat in categories %}
                                 <li><a href="{% url 'posts_by_category' cat.id %}">{{ cat.category_name }}</a></li>
+                                <li><span class="badge badge-secondary">{{ cat.blogs.count }}</span></li>li>
                                 {% endfor %}
                             </ul>
                         </div>
