@@ -31,19 +31,20 @@ DEBUG = os.getenv("DEBUG") == "True"
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "blogs",
     "about",
     "crispy_forms",
@@ -79,7 +80,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API documentation for Blog Application",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-    'COMPONENT_SPLIT_REQUEST': True,
+    "COMPONENT_SPLIT_REQUEST": True,
 }
 
 MIDDLEWARE = [
@@ -119,7 +120,7 @@ WSGI_APPLICATION = "blog_main.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql", 
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("DB_NAME"),
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
@@ -194,4 +195,3 @@ jazzmin_settings = {
     "changeform_format": "horizontal_tabs",
     "show_ui_builder": True,
 }
-

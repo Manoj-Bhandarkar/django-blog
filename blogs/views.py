@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Blog, Category, Comment, Status
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.postgres.search import SearchVector
 
 
 def posts_by_category(request, category_id):
@@ -61,12 +62,9 @@ def blog_detail(request, slug):
 def blog_search(request):
     keyword = request.GET.get("keyword").strip()
     if keyword:
-        blogs = Blog.objects.filter(
-            Q(title__icontains=keyword)
-            | Q(short_description__icontains=keyword)
-            | Q(blog_body__icontains=keyword),
-            status=Status.PUBLISHED,
-        ).select_related("category", "author")
+        blogs = Blog.objects.annotate(
+            search=SearchVector("title", "short_description", "blog_body"),
+        ).filter(search=keyword, status=Status.PUBLISHED)
     else:
         blogs = Blog.objects.none()
 
