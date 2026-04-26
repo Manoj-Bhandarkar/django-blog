@@ -5,6 +5,7 @@ from blogs.models import Blog, Status
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth, messages
 from django.core.paginator import Paginator
+from django.contrib.auth import login as auth_login
 
 def home(request):
     featured_posts = Blog.objects.select_related('category', 'author').filter(is_featured=True, status=Status.PUBLISHED).order_by(
@@ -18,7 +19,7 @@ def home(request):
     posts = paginator.get_page(page)
     # fetch about us information
     try:
-        about = About.objects.get()
+        about = About.objects.first()
     except About.DoesNotExist:
         about = None
 
@@ -34,7 +35,8 @@ def register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            auth_login(request, user)
             return redirect("login")
     else:
         form = RegistrationForm()

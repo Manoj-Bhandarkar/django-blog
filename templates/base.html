@@ -42,7 +42,10 @@
                         <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-warning">Dashboard</a>
                     </span> &nbsp;
                     <!-- user available from Django auth as context processor -->
-                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
+                    <form action="{% url 'logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+                    </form>
                     {% endif %}
                 </div>
             </div>
