@@ -1,167 +1,91 @@
-# 📝 Django Blog Management System
+# 📝 Django Blog Management System + REST API
 
-A full-featured Blog Web Application + REST API built using Django and Django REST Framework.
+A professional, full-stack Blog Application featuring a custom Management Dashboard and a secure REST API. Built with Django's best practices for scalability and security.
 
-## 🚀 Overview
-Public blog website
-Admin-style dashboard (custom, not Django admin)
-Authentication system
-Role-based access (simple: User / Staff / Superuser)
-REST API with JWT authentication
-
-
-## 🔗 Live Demo
-* ⚛️ Live App: https://blog.manojbhandarkar.cloud
-* 📘 API Docs (Swagger): https://blog.manojbhandarkar.cloud/swagger/
----
-
-🚀 Features
----
-🌐 Frontend (User Side)
-View all blog posts
-Filter posts by category
-Search blogs
-View blog details
-Add comments (approval required)
-Pagination support
-
-
-🔐 Authentication
----
-User Registration
-Login / Logout
-JWT Authentication (for API)
-
-
-📊 Dashboard (Custom Admin Panel)
----
-👤 Normal User
-Access dashboard
-Add blog posts
-Edit own posts
-
-🧑‍💼 Staff User (is_staff=True)
-Manage categories (Add/Edit/Delete)
-Manage all blog posts
-Manage users (Add/Edit/Delete)
-
-👑 Superuser (is_superuser=True)
-Full access
-Access user listing page
-
-----
-🧩 Blog Features
----
-Slug-based URLs (SEO friendly)
-Featured posts
-Draft / Published status
-Image uploads
-Category system
+## 🚀 Live Demo
+* ⚛️ **Live App:** [https://blog.manojbhandarkar.cloud](https://blog.manojbhandarkar.cloud)
+* 📘 **API Docs (Swagger):** [https://manojbhandarkar.cloud](https://manojbhandarkar.cloud)
 
 ---
-💬 Comment System
----
-Authenticated users can comment
-Comments require admin approval
-Ordered by latest
+
+## ✨ Key Features
+
+### 🌐 Public Frontend
+* **Dynamic Content:** Featured posts, category filtering, and smart search.
+* **SEO Optimized:** Slug-based URLs for better indexing.
+* **Engagement:** Comment system with moderation workflow.
+* **Performance:** Optimized database queries using `select_related` and `prefetch_related`.
+
+### 📊 Custom Dashboard (Admin Panel)
+* **Role-Based Access Control (RBAC):** Distinct permissions for Users, Staff, and Superusers.
+* **Content Management:** Full CRUD for Blogs and Categories.
+* **User Management:** Superuser-only interface to manage platform accounts.
+* **Modern UI:** Styled with Bootstrap 4 and Django-Crispy-Forms.
+
+### 🔌 REST API (DRF)
+* **Secure Auth:** JWT Authentication (SimpleJWT) for stateless login.
+* **Standardized Docs:** Interactive OpenAPI 3.0 documentation via Swagger/Redoc.
+* **Resource Management:** Paginated and filtered blog endpoints.
 
 ---
-🔌 REST API (Django REST Framework)
----
-Authentication
-JWT-based login
-Register via API
 
-## 📚 API Endpoints
+## 🛠️ Tech Stack
+* **Backend:** Python, Django 5.x+, Django REST Framework (DRF).
+* **Database:** PostgreSQL (Production), SQLite (Development).
+* **Security:** JWT (SimpleJWT), Django Middleware, Environment Variables (`python-dotenv`).
+* **Frontend:** Bootstrap 4, FontAwesome, Django Templates.
+* **API Documentation:** drf-spectacular (OpenAPI 3.0).
 
-| Method | Endpoint         | Description            |
-| ------ | ---------------- | ---------------------- |
-| POST   | /api/register/   | Register user          |
-| POST   | /api/login/      | Get JWT token          |
-| GET    | /api/posts/      | List posts (paginated) |
-| POST   | /api/posts/      | Create post            |
-| GET    | /api/posts/{id}/ | Retrieve post          |
-| PUT    | /api/posts/{id}/ | Update post            |
-| DELETE | /api/posts/{id}/ | Delete post            |
 ---
 
-🛠️ Tech Stack
----
-Python
-Django
-Django REST Framework
-SQLite (default)
-Bootstrap 4
-Crispy Forms
-JWT (SimpleJWT)
+## 🔐 Permissions Logic
 
-📁 Project Structure
----
-blog_main/
-│
-├── blogs/           # Blog app (models, views, API)
-├── dashboards/      # Custom admin dashboard
-├── about/           # About & social links
-├── templates/       # HTML templates
-├── static/          # Static files
-├── media/           # Uploaded images
-│
-└── manage.py
+| Action | User | Staff | Superuser |
+| :--- | :---: | :---: | :---: |
+| Write Posts | ✅ | ✅ | ✅ |
+| Edit Own Post | ✅ | ✅ | ✅ |
+| Edit Any Post | ❌ | ✅ | ✅ |
+| Delete Post | ❌ | ✅ | ✅ |
+| Manage Categories | ❌ | ✅ | ✅ |
+| Manage Users | ❌ | ❌ | ✅ |
+
 ---
 
-⚙️ Installation
+## ⚙️ Installation & Setup
+
+1. **Clone & Environment**
+   ```bash
+   git clone https://github.com
+   cd blog-project
+   python -m venv venv
+   source venv/bin/activate  # venv\Scripts\activate on Windows
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Database Setup**
+   *Configure your .env file with your Database credentials.*
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+4. **Run Project**
+   ```bash
+   python manage.py createsuperuser
+   python manage.py runserver
+   ```
+
 ---
-1. Clone repository
-git clone https://github.com/your-username/blog-project.git
-cd blog-project
-
-2. Create virtual environment
-python -m venv venv
-venv\Scripts\activate   # Windows
-
-3. Install dependencies
-pip install -r requirements.txt
-
-4. Run migrations
-python manage.py makemigrations
-python manage.py migrate
-
-5. Create superuser
-python manage.py createsuperuser
-
-6. Run server
-python manage.py runserver
-
-## ✨ Features
-* 🔐 JWT Authentication (Login + Refresh)
-* 👤 User Registration API
-* 📝 Blog CRUD Operations
-* 📄 Pagination Support
-* 🔍 Search & Filtering
-* 📘 Swagger API Documentation
-* 🔄 Auto Token Refresh (Frontend)
-* 🌐 Full-stack deployment with custom domain
----
-
-🔐 Permissions Summary
----------------------------------------------------
-| Action            | User   | Staff  | Superuser |
-| ----------------- | ------ | ------ | --------- |
-| Add Post	        |  ✅	   |  ✅	  |  ✅       |
-| Edit Own Post	    |  ✅	   |  ✅	  |  ✅       |
-| Edit Any Post	    |  ❌	   |  ✅	  |  ✅       |
-| Delete Post	      |  ❌	   |  ✅	  |  ✅       |
-| Manage Categories |  ❌	   |  ✅	  |  ✅       |
-| Manage Users	    |  ❌	   |  ✅	  |  ✅       |
-| View Users Page	  |  ❌	   |  ❌	  |  ✅       |
-----------------------------------------------------
 
 ## 👨‍💻 Author
-
 **Manoj Bhandarkar**
-* Portfolio: https://manojbhandarkar.cloud
-* GitHub: https://github.com/manoj-bhandarkar
----
+* **Portfolio:** [manojbhandarkar.cloud](https://manojbhandarkar.cloud)
+* **GitHub:** [@manoj-bhandarkar](https://github.com/manoj-bhandarkar)
+* **LinkedIn:** [Your-LinkedIn-Link]
 
-## ⭐ Show your support
-If you like this project, give it a ⭐ on GitHub!
+---
+⭐ **If you find this project helpful, please give it a star!**
