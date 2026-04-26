@@ -20,8 +20,9 @@ def dashboard(request):
 
 @login_required(login_url="login")
 def categories(request):
-    # not required to fetch category because context processor is used
-    return render(request, "dashboards/categories.html")
+    categories_list = Category.objects.all().order_by('-created_at')
+    context = {"categories": categories_list}
+    return render(request, "dashboards/categories.html", context)
 
 
 @login_required(login_url="login")
@@ -160,7 +161,7 @@ def edit_user(request, pk):
             return redirect("users")
     else:
         form = EditUserForm(instance=user)
-    context = {"form": form, "user": user}
+    context = {"form": form, "selected_user": user}
     return render(request, "dashboards/edit_user.html", context)
 
 

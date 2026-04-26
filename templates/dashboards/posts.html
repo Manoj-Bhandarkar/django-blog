@@ -28,11 +28,18 @@
                     <td>{{post.title}}</td>
                     <td>{{post.category}}</td>
                     <td>{{post.author}}</td>
-                    <td>{{post.status}}</td>
-                    <td>{% if post.is_featured %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+                    <td>{{post.get_status_display}}</td>
+                    <td>{% if post.is_featured %}<i class="fa fa-check text-success"></i>{% else %}<i
+                            class="fa fa-times text-danger"></i>{% endif %}</td>
                     <td>
                         <a href="{% url 'edit_post' post.pk %}"><i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
-                        <a href="{% url 'delete_post' post.pk %}"><i class="fa fa-trash text-danger"></i></a>
+                    <td>
+                        <form action="{% url 'delete_user' user.id %}" method="POST"
+                            onsubmit="return confirm('Are you sure?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                     </td>
                 </tr>
                 {% endfor %}
