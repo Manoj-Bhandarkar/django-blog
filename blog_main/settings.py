@@ -166,9 +166,9 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
-    "blog_main/static",
+    BASE_DIR / "blog_main" / "static",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
@@ -184,9 +184,6 @@ jazzmin_settings = {
     "welcome_sign": "Welcome to the Blog Admin Panel",
     "copyright": "Blog Admin © 2026",
     "authors": "Manoj Bhandarkar",
-    "logo": "images/logo.png",
-    "logo_small": "images/logo_small.png",
-    "favicon": "images/favicon.ico",
     "topmenu_links": [
         {"name": "Home", "url": "/", "new_window": False},
         {"name": "API Docs", "url": "/api/docs/", "new_window": True},
@@ -197,3 +194,4 @@ jazzmin_settings = {
     "changeform_format": "horizontal_tabs",
     "show_ui_builder": True,
 }
+
