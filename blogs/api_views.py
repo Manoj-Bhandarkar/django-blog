@@ -5,12 +5,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from drf_spectacular.utils import extend_schema
 from .models import Blog
 from .serializers import BlogSerializer, RegisterSerializer, CustomTokenSerializer
 
 # ---------------- REGISTER ----------------
-
+@extend_schema(
+    request=RegisterSerializer,
+    responses={201: {"example": {"message": "User created successfully"}}}
+)
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register_user(request):

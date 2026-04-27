@@ -28,7 +28,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
-# SECURITY WARNING: don't run with debug turned on in production!
 
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
@@ -94,6 +93,25 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware"
 ]
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HSTS settings (Start with a small value like 3600 to test, then increase)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Cookie Security
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Recommended: Prevent JavaScript from accessing these cookies (XSS protection)
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True  # Note: Some AJAX setups may need this to be False
+
+# Modern CSRF protection
+CSRF_COOKIE_SAMESITE = 'Lax'
+
 
 ROOT_URLCONF = "blog_main.urls"
 
