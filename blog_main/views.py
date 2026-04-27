@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth, messages
 from django.core.paginator import Paginator
 from django.contrib.auth import login as auth_login
+from django.core.cache import cache
 
 def home(request):
     featured_posts = Blog.objects.select_related('category', 'author').filter(is_featured=True, status=Status.PUBLISHED).order_by(
@@ -19,7 +20,7 @@ def home(request):
     posts = paginator.get_page(page)
     # fetch about us information
     try:
-        about = About.objects.first()
+        about = cache.get_or_set('about_data', About.objects.first(), 86400)
     except About.DoesNotExist:
         about = None
 
