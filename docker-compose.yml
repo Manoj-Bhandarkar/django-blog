@@ -12,6 +12,14 @@ services:
     ports:
       - "5432:5432"
 
+
+  redis:
+    image: redis:alpine
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "6379:6379"
+
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -28,8 +36,10 @@ services:
       - DB_HOST=db
       - DB_PORT=5432
       - DEBUG=True
+      - REDIS_URL=redis://redis:6379/1
     depends_on:
       - db
+      - redis
 
 volumes:
   postgres_data:

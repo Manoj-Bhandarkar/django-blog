@@ -8,4 +8,4 @@ router.register(r'posts', BlogViewSet, basename='posts')
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', register_user, name='register_user'),
-    path('login/', CustomLoginView.as_view(), name='login'),    ]
+    path('api_login/', CustomLoginView.as_view(), name='api_login'),    ]
