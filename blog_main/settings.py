@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
+ALLOWED_HOSTS = ["13.233.184.40"]
 
 
 # Application definition
@@ -94,7 +94,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware"
 ]
 # Redirect all HTTP traffic to HTTPS
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 # HSTS settings (Start with a small value like 3600 to test, then increase)
 SECURE_HSTS_SECONDS = 31536000  # 1 year
