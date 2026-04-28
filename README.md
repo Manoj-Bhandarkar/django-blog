@@ -12,11 +12,11 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 
 ## 🧠 Key Highlights
 
-- 🔒 HTTPS-enabled deployment with Nginx + Let's Encrypt
-- 🐳 Fully Dockerized architecture (Django + PostgreSQL + Redis + Nginx)
-- ⚡ Production-ready setup on AWS EC2
-- 🔁 Reverse proxy with Nginx (static/media handling)
-- 📦 Clean separation of services using Docker Compose
+- 🔍 **PostgreSQL Full-Text Search:** Advanced search capabilities using `SearchVector` across multiple fields for high-performance, linguistically aware results.
+- 🐳 **Dockerized Architecture:** Multi-container setup (Django + PostgreSQL + Redis + Nginx) for seamless deployment and scalability.
+- ⚡ **Redis Caching:** Implemented selective caching for global site data to reduce database load and improve response times.
+- 🔒 **Production Security:** HTTPS enabled via Nginx & Let's Encrypt, with a secure Gunicorn WSGI setup on AWS EC2.
+- 🚀 **Query Optimization:** Eliminated N+1 issues using `select_related` and `prefetch_related`.
 
 ---
 
@@ -52,11 +52,11 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 
 ## 🛠️ Tech Stack
 * **Backend:** Python, Django 5.x+, Django REST Framework (DRF).
-* **Database:** PostgreSQL.
+* **Database:** PostgreSQL (with Full-Text Search).
 * **Cache:** Redis
 * **Webserver:** Gunicorn + Nginx.
 * **Security:** JWT (SimpleJWT), SSL/TLS, Environment Variables.
-* **Infrastructure:** Docker, AWS EC2.
+* **Infrastructure:** Docker, Docker Compose, AWS EC2.
 * **API Documentation:** drf-spectacular (OpenAPI 3.0).
 
 ---

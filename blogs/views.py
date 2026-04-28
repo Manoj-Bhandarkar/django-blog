@@ -63,7 +63,7 @@ def blog_search(request):
     if keyword:
         blogs = Blog.objects.annotate(
             search=SearchVector("title", "short_description", "blog_body"),
-        ).filter(search=keyword, status=Status.PUBLISHED)
+        ).filter(search=keyword, status=Status.PUBLISHED).select_for_update("category", "author")
     else:
         blogs = Blog.objects.none()
 
