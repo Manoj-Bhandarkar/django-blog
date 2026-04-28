@@ -96,8 +96,7 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
    docker-compose exec web python manage.py migrate
    docker-compose exec web python manage.py collectstatic --no-input
    docker-compose exec web python manage.py createsuperuser
-  ```
-
+   ```
 ---
 
 ## 👨‍💻 Author
@@ -107,4 +106,5 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 * **LinkedIn:** [@manoj0bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
 
 ---
+
 ⭐ **If you find this project helpful, please give it a star!**
