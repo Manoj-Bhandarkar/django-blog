@@ -6,7 +6,7 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 
 ## 🚀 Live Demo
 * ⚛️ **Live App:** [https://blog.manojbhandarkar.cloud](https://blog.manojbhandarkar.cloud)
-* 📘 **API Docs (Swagger):** [https://blog.manojbhandarkar.cloud/api/docs](https://api.manojbhandarkar.cloud/api/docs)
+* 📘 **API Docs (Swagger):** [https://blog.manojbhandarkar.cloud/api/docs](https://blog.manojbhandarkar.cloud/api/docs)
 
 ---
 
