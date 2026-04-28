@@ -91,7 +91,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware"
 ]
 # Redirect all HTTP traffic to HTTPS
 SECURE_SSL_REDIRECT = False
@@ -215,11 +214,6 @@ jazzmin_settings = {
     "changeform_format": "horizontal_tabs",
     "show_ui_builder": True,
 }
-
-# Configure WhiteNoise for production (Optional but Recommended)
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
-WHITENOISE_MANIFEST_STRICT = False
 
 CACHES = {
     "default": {
