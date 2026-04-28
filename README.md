@@ -6,7 +6,7 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 
 ## 🚀 Live Demo
 * ⚛️ **Live App:** [https://blog.manojbhandarkar.cloud](https://blog.manojbhandarkar.cloud)
-* 📘 **API Docs (Swagger):** [https://blog.manojbhandarkar.cloud/api/docs](https://api.manojbhandarkar.cloud/api/docs)
+* 📘 **API Docs (Swagger):** [https://blog.manojbhandarkar.cloud/api/docs](https://blog.manojbhandarkar.cloud/api/docs)
 
 ---
 
@@ -96,15 +96,15 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
    docker-compose exec web python manage.py migrate
    docker-compose exec web python manage.py collectstatic --no-input
    docker-compose exec web python manage.py createsuperuser
-  ```
-
+   ```
 ---
 
 ## 👨‍💻 Author
 **Manoj Bhandarkar**
 * **Portfolio:** [manojbhandarkar.cloud](https://manojbhandarkar.cloud)
 * **GitHub:** [@manoj-bhandarkar](https://github.com/manoj-bhandarkar)
-* **LinkedIn:** [@manoj0bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
+* **LinkedIn:** [@manoj-bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
 
 ---
+
 ⭐ **If you find this project helpful, please give it a star!**
