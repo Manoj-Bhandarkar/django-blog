@@ -103,7 +103,7 @@ A professional, full-stack Blog Application featuring a custom Management Dashbo
 **Manoj Bhandarkar**
 * **Portfolio:** [manojbhandarkar.cloud](https://manojbhandarkar.cloud)
 * **GitHub:** [@manoj-bhandarkar](https://github.com/manoj-bhandarkar)
-* **LinkedIn:** [@manoj0bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
+* **LinkedIn:** [@manoj-bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
 
 ---
 
