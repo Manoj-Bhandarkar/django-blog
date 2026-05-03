@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 
-ALLOWED_HOSTS = ["13.233.184.40"]
+ALLOWED_HOSTS = ["13.233.184.40", "127.0.0.1","localhost"]
 
 
 # Application definition
