@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
-{% block content %} 
+{% block content %}
+{% if category.id %}
+<!-- Category-wise Posts Section -->
+<h3 class="text-uppercase text-warning p-2" style="letter-spacing: 2px;">Category - {{ category }}</h3>
+<div class="row mb-2">
 
-        <!-- Category-wise Posts Section -->
-        <h3 class="text-uppercase text-warning p-2" style="letter-spacing: 2px;">Category - {{ category }}</h3>
-        <div class="row mb-2">
-            {% if posts %}
-            {% for post in posts %}
-            <div class="col-md-6">
-                <div class="card border-0">
-                    <div class="card-body">
-                        <h3><a href="{% url 'blog_detail' post.slug %}" class="text-dark">{{ post.title }}</a></h3>
-                        <small class="mb-1 text-muted">{{ post.created_at | timesince }} ago | {{ post.author }}</small>
-                        <p class="card-text">{{ post.short_description|truncatewords:20 }}</p>
-                    </div>
-                </div>
+    <div class="col-md-6">
+        <div class="card border-0">
+            <div class="card-body">
+                {% if posts %}
+                {% for post in posts %}
+                <h3><a href="{% url 'blog_detail' post.slug %}" class="text-dark">{{ post.title }}</a></h3>
+                <small class="mb-1 text-muted">{{ post.created_at | timesince }} ago | {{ post.author }}</small>
+                <p class="card-text">{{ post.short_description|truncatewords:20 }}</p>
+                {% endfor %}
+                {% else %}
+                <p>No posts Found in this category.</p>
+                {% endif %}
             </div>
-            {% endfor %}
-            {% else %}
-             <p>No posts Found in this category.</p>
-            {% endif %}
         </div>
+    </div>
 
-        {% endblock %}
+</div>
+{% endif %}
+
+{% endblock %}

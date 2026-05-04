@@ -59,7 +59,7 @@
         <div class="nav-scroller py-2 mb-3 border-bottom border-top">
             <nav class="nav d-flex flex-nowrap overflow-auto">
                 {% for cat in categories %}
-                <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}">
+                <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.slug %}">
                     {{ cat.category_name }}
                     <span class="badge badge-light">{{ cat.post_count }}</span>
                 </a>

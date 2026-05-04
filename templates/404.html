@@ -1,16 +1,19 @@
+<!-- templates/404.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Page Not Found</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; }
+        h1 { font-size: 50px; color: #e74c3c; }
+        .home-link { text-decoration: none; background: #007bff; color: white; padding: 10px 20px; border-radius: 5px; }
+    </style>
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100">
-
-<div class="text-center">
-    <h1 class="display-4">404</h1>
-    <p class="lead">Page not found</p>
-    <a href="/" class="btn btn-warning">Go Home</a>
-</div>
-
+<body>
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+    <p>The page you requested does not exist.</p>
+    <a href="/" class="home-link">Return to Homepage</a>
 </body>
 </html>

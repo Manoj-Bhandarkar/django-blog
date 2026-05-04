@@ -6,14 +6,18 @@ from django.core.paginator import Paginator
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Count, Q
 
-def posts_by_category(request, category_id):
+def posts_by_category(request, slug):
+    category = Category.objects.filter(slug=slug).first()
+    if not category:
+        return render(request, "404.html", status=404)
+
     posts = Blog.objects.select_related("category", "author").filter(
-        status=Status.PUBLISHED, category_id=category_id
+        status=Status.PUBLISHED, category__slug=slug
     )
     categories = Category.objects.annotate(
-        post_count=Count('blogs', filter=Q(blogs__status='published'))
+        post_count=Count('blogs', filter=Q(blogs__status=Status.PUBLISHED))
     ).filter(post_count__gt=0)
-    category = get_object_or_404(Category, pk=category_id)
+   
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
@@ -34,7 +38,7 @@ def blog_detail(request, slug):
         status=Status.PUBLISHED,
     )
     categories = Category.objects.annotate(
-         post_count=Count('blogs', filter=Q(blogs__status='published'))
+         post_count=Count('blogs', filter=Q(blogs__status=Status.PUBLISHED))
     ).filter(post_count__gt=0)
     if request.method == "POST":
         comment = Comment()
@@ -81,3 +85,7 @@ def blog_search(request):
         "keyword": keyword,
     }
     return render(request, "blog_search.html", context)
+
+def all_categories(request):
+    categories = Category.objects.all()
+    return render(request, "all_categories.html", {"categories": categories})
