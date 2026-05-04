@@ -61,7 +61,7 @@
                 {% for cat in categories %}
                 <a class="p-2 text-muted" href="{% url 'posts_by_category' cat.id %}">
                     {{ cat.category_name }}
-                    <span class="badge badge-light">{{ cat.blogs.count }}</span>
+                    <span class="badge badge-light">{{ cat.post_count }}</span>
                 </a>
                 {% endfor %}
             </nav>

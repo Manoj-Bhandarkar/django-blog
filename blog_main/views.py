@@ -1,12 +1,13 @@
 from django.shortcuts import redirect, render
 from about.models import About
 from .forms import RegistrationForm
-from blogs.models import Blog, Status
+from blogs.models import Blog, Category, Status
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import auth, messages
 from django.core.paginator import Paginator
 from django.contrib.auth import login as auth_login
 from django.core.cache import cache
+from django.db.models import Count, Q
 
 def home(request):
     featured_posts = Blog.objects.select_related('category', 'author').filter(is_featured=True, status=Status.PUBLISHED).order_by(
@@ -15,6 +16,9 @@ def home(request):
     posts = Blog.objects.select_related('category', 'author').filter(is_featured=False, status=Status.PUBLISHED).order_by(
         "-created_at"
     )
+    categories = cache.get_or_set('categories_with_counts', Category.objects.annotate(
+        post_count=Count('blogs', filter=Q(blogs__status='published'))
+    ).filter(post_count__gt=0), 86400)
     paginator = Paginator(posts, 5)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
@@ -28,6 +32,7 @@ def home(request):
         "featured_posts": featured_posts,
         "posts": posts,
         "about": about,
+        "categories": categories,
     }
     return render(request, "home.html", context)
 

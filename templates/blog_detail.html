@@ -69,36 +69,47 @@
 
         <aside class="col-lg-4 col-md-12 mt-4 mt-lg-0">
             <!-- Categories widget-->
-            <div class="card mb-4 p-3">
-                <h4 class="font-italic">Categories</h4>
+            <div class="card mb-4">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                {% for cat in categories %}
-                                <li class="d-flex justify-content-between">
-                                    <a href="{% url 'posts_by_category' cat.id %}">
-                                        {{ cat.category_name }}
-                                    </a>
-                                    <span class="badge badge-secondary">
-                                        {{ cat.blogs.count }}
-                                    </span>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+
+                    <h5 class="mb-3">Categories</h5>
+
+                    <ul class="list-unstyled mb-0">
+                        {% for cat in categories %}
+                        <li class="d-flex justify-content-between align-items-center py-2">
+
+                            <a href="{% url 'posts_by_category' cat.id %}" class="text-dark">
+                                {{ cat.category_name }}
+                            </a>
+
+                            <span class="badge badge-pill badge-warning category-count">
+                                {{ cat.post_count }}
+                            </span>
+
+                        </li>
+                        {% endfor %}
+                    </ul>
+
                 </div>
             </div>
             <!-- Social Side link widget-->
             {% if social_links %}
-            <div class="card mb-4 p-3">
-                <h4 class="font-italic">Follow Us</h4>
-                <ol class="list-unstyled">
-                    {% for link in social_links %}
-                    <li><a href="{{ link.link }}" target="_blank">{{ link.platform }}</a></li>
-                    {% endfor %}
-                </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+
+                    <h5 class="mb-3">Follow Us</h5>
+
+                    <ul class="list-unstyled mb-0">
+                        {% for link in social_links %}
+                        <li class="py-1">
+                            <a href="{{ link.link }}" target="_blank">
+                                {{ link.platform }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
             </div>
             {% endif %}
         </aside>

@@ -4,13 +4,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Blog, Category, Comment, Status
 from django.core.paginator import Paginator
 from django.contrib.postgres.search import SearchVector
-
+from django.db.models import Count, Q
 
 def posts_by_category(request, category_id):
     posts = Blog.objects.select_related("category", "author").filter(
         status=Status.PUBLISHED, category_id=category_id
     )
-
+    categories = Category.objects.annotate(
+        post_count=Count('blogs', filter=Q(blogs__status='published'))
+    ).filter(post_count__gt=0)
     category = get_object_or_404(Category, pk=category_id)
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
@@ -18,6 +20,7 @@ def posts_by_category(request, category_id):
     context = {
         "posts": posts,
         "category": category,
+        "categories": categories,
     }
     return render(request, "posts_by_category.html", context)
 
@@ -30,7 +33,9 @@ def blog_detail(request, slug):
         slug=slug,
         status=Status.PUBLISHED,
     )
-
+    categories = Category.objects.annotate(
+         post_count=Count('blogs', filter=Q(blogs__status='published'))
+    ).filter(post_count__gt=0)
     if request.method == "POST":
         comment = Comment()
         if request.user.is_authenticated:
@@ -54,6 +59,7 @@ def blog_detail(request, slug):
     context = {
         "single_blog": single_blog,
         "comments": comments,
+        "categories": categories,
     }
     return render(request, "blog_detail.html", context)
 
