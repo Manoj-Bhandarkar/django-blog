@@ -8,6 +8,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from drf_spectacular.utils import extend_schema
 from .models import Blog
 from .serializers import BlogSerializer, RegisterSerializer, CustomTokenSerializer
+from django.db.models import Q
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+class BlogPagination(PageNumberPagination):
+    page_size = 5
 
 # ---------------- REGISTER ----------------
 @extend_schema(
@@ -34,16 +40,24 @@ class CustomLoginView(TokenObtainPairView):
 class BlogViewSet(ModelViewSet):
     serializer_class = BlogSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = BlogPagination
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ["title", "short_description"]
+    ordering_fields = ["created_at"]
 
     def get_queryset(self):
         user = self.request.user
 
-        # Staff can see all
-        if user.is_staff and user.is_authenticated:
-            return Blog.objects.all()
+        queryset = Blog.objects.select_related("author", "category")
 
-        # Normal users → only own posts
-        return Blog.objects.filter(status="published")
+        # Staff can see all
+        if user.is_staff:
+            return queryset
+
+        if user.is_authenticated:
+            return queryset.filter(Q(status="published") | Q(author=user)).distinct()
+        
+        return queryset.filter(status="published")
     
     def perform_create(self, serializer):
             serializer.save(author=self.request.user)

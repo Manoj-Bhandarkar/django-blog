@@ -5,7 +5,10 @@ from django.contrib.auth.models import User
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source="author.username")
+    author = serializers.CharField(source="author.username", read_only=True)
+    category_name = serializers.CharField(
+        source="category.category_name", read_only=True
+    )
 
     class Meta:
         model = Blog
@@ -14,10 +17,11 @@ class BlogSerializer(serializers.ModelSerializer):
             "title",
             "slug",
             "category",
+            "category_name",
             "author",
             "short_description",
-            "blog_body",
             "status",
+            "blog_body",
             "is_featured",
             "created_at",
         ]
