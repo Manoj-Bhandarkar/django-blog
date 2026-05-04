@@ -3,10 +3,9 @@
 <!-- HERO SECTION -->
 {% for post in featured_posts %}
 {% if forloop.first %}
-<div class="position-relative p-4 p-md-5 mb-4 text-white rounded bg-dark"
+<div class="hero-banner position-relative p-4 p-md-5 mb-4 text-white rounded"
   style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url({{ post.featured_image.url }}) center/cover no-repeat;">
-  
-  <div class="col-md-8 px-0">
+  <div class="col-md-7 px-0">
     <h1 class="hero-title">{{ post.title }}</h1>
     <p class="lead my-3">{{ post.short_description|truncatewords:20 }}</p>
     <a href="{% url 'blog_detail' post.slug %}" class="btn btn-outline-warning">
@@ -22,7 +21,7 @@
 <h3 class="section-title">FEATURED POSTS</h3>
 
 <div class="row">
-  {% for post in featured_posts|slice:":2" %}
+  {% for post in other_featured_posts|slice:":2" %}
   <div class="col-md-6">
     <div class="card h-100">
 
@@ -46,6 +45,8 @@
 
     </div>
   </div>
+  {% empty %}
+  <p class="ml-3">No more featured posts</p>
   {% endfor %}
 </div>
 
@@ -91,10 +92,10 @@
     <!-- Pagination -->
     <div class="d-flex justify-content-between">
       {% if posts.has_previous %}
-        <a class="btn btn-outline-warning" href="?page={{ posts.previous_page_number }}">Newer</a>
+      <a class="btn btn-outline-warning" href="?page={{ posts.previous_page_number }}">Newer</a>
       {% endif %}
       {% if posts.has_next %}
-        <a class="btn btn-outline-warning ml-auto" href="?page={{ posts.next_page_number }}">Older</a>
+      <a class="btn btn-outline-warning ml-auto" href="?page={{ posts.next_page_number }}">Older</a>
       {% endif %}
     </div>
 

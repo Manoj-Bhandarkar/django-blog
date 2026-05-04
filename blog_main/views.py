@@ -9,22 +9,33 @@ from django.contrib.auth import login as auth_login
 from django.core.cache import cache
 from django.db.models import Count, Q
 
+
 def home(request):
-    featured_posts = Blog.objects.select_related('category', 'author').filter(is_featured=True, status=Status.PUBLISHED).order_by(
-        "-created_at"
+    featured_posts = (
+        Blog.objects.select_related("category", "author")
+        .filter(is_featured=True, status=Status.PUBLISHED)
+        .order_by("-created_at")
     )
-    posts = Blog.objects.select_related('category', 'author').filter(is_featured=False, status=Status.PUBLISHED).order_by(
-        "-created_at"
+    posts = (
+        Blog.objects.select_related("category", "author")
+        .filter(is_featured=False, status=Status.PUBLISHED)
+        .order_by("-created_at")
     )
-    categories = cache.get_or_set('categories_with_counts', Category.objects.annotate(
-        post_count=Count('blogs', filter=Q(blogs__status='published'))
-    ).filter(post_count__gt=0), 86400)
+    categories = cache.get_or_set(
+        "categories_with_counts",
+        Category.objects.annotate(
+            post_count=Count("blogs", filter=Q(blogs__status="published"))
+        ).filter(post_count__gt=0),
+        86400,
+    )
+    hero_post = featured_posts.first()
+    other_featured_posts = featured_posts[1:]
     paginator = Paginator(posts, 5)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     posts = paginator.get_page(page)
     # fetch about us information
     try:
-        about = cache.get_or_set('about_data', About.objects.first(), 86400)
+        about = cache.get_or_set("about_data", About.objects.first(), 86400)
     except About.DoesNotExist:
         about = None
 
@@ -33,6 +44,8 @@ def home(request):
         "posts": posts,
         "about": about,
         "categories": categories,
+        "hero_post": hero_post,
+        "other_featured_posts": other_featured_posts,
     }
     return render(request, "home.html", context)
 
@@ -63,12 +76,13 @@ def login(request):
                 auth.login(request, user)
                 return redirect("dashboard")
             messages.error(request, "Invalid username or password")
-    else:   
+    else:
         form = AuthenticationForm()
     context = {
         "form": form,
     }
     return render(request, "login.html", context)
+
 
 def logout(request):
     auth.logout(request)
