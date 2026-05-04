@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Blog, Category, Comment, Status
 from django.core.paginator import Paginator
 from django.contrib.postgres.search import SearchVector
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Prefetch
 
 
 def posts_by_category(request, slug):
@@ -33,7 +33,12 @@ def posts_by_category(request, slug):
 def blog_detail(request, slug):
     single_blog = get_object_or_404(
         Blog.objects.select_related("category", "author").prefetch_related(
-            "comments__user"
+            Prefetch(
+                "comments",
+                queryset=Comment.objects.select_related("user")
+                .filter(is_approved=True)
+                .order_by("-created_at"),
+            )
         ),
         slug=slug,
         status=Status.PUBLISHED,
@@ -64,15 +69,8 @@ def blog_detail(request, slug):
         messages.success(request, "Comment added successfully!")
         return HttpResponseRedirect(request.path_info)
 
-    # comment section
-    comments = (
-        Comment.objects.select_related("user")
-        .filter(blog=single_blog, is_approved=True)
-        .order_by("-created_at")
-    )
     context = {
         "single_blog": single_blog,
-        "comments": comments,
         "categories": categories,
     }
     return render(request, "blog_detail.html", context)
