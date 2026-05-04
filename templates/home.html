@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <!-- HERO SECTION -->
 {% for post in featured_posts %}
 {% if forloop.first %}
@@ -19,71 +18,78 @@
 {% endif %}
 {% endfor %}
 
+<!-- FEATURED POSTS -->
+<h3 class="section-title">FEATURED POSTS</h3>
 
-<!-- MAIN GRID -->
 <div class="row">
+  {% for post in featured_posts|slice:":2" %}
+  <div class="col-md-6">
+    <div class="card h-100">
 
-  <!-- LEFT CONTENT -->
-  <div class="col-lg-8 col-md-12">
+      {% if post.featured_image %}
+      <img src="{{ post.featured_image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+      {% endif %}
 
-    <!-- FEATURED POSTS -->
-    <h3 class="section-title">FEATURED POSTS</h3>
-
-    {% for post in featured_posts %}
-    {% if not forloop.first %}
-    <div class="featured-post d-flex mb-4">
-
-
-      <!-- TEXT -->
-      <div>
+      <div class="card-body">
         <h5>
           <a href="{% url 'blog_detail' post.slug %}" class="text-dark">
             {{ post.title }}
           </a>
         </h5>
 
-        <small class="text-muted d-block mb-1">
-          {{ post.created_at|timesince }} ago | {{ post.author }}
-        </small>
-
-        <p class="mb-0">
-          {{ post.short_description|truncatewords:20 }}
-        </p>
-      </div>
-
-    </div>
-    {% endif %}
-    {% endfor %}
-
-
-    <!-- RECENT POSTS -->
-    <h3 class="section-title">RECENT ARTICLES</h3>
-
-    {% for post in posts %}
-    <div class="card">
-      <div class="card-body">
-
-        <h4>
-          <a href="{% url 'blog_detail' post.slug %}" class="text-dark">
-            {{ post.title }}
-          </a>
-        </h4>
-
         <small class="text-muted d-block mb-2">
           {{ post.created_at|timesince }} ago | {{ post.author }}
         </small>
 
-        <p>
-          {{ post.short_description|truncatewords:25 }}
-        </p>
+        <p>{{ post.short_description|truncatewords:20 }}</p>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<!-- MAIN CONTENT -->
+<div class="row mt-4">
+
+  <!-- LEFT: RECENT POSTS -->
+  <div class="col-lg-8">
+
+    <h3 class="section-title">RECENT ARTICLES</h3>
+
+    {% for post in posts %}
+    <div class="card mb-3">
+      <div class="row no-gutters">
+
+        {% if post.featured_image %}
+        <div class="col-md-4">
+          <img src="{{ post.featured_image.url }}" class="img-fluid h-100" style="object-fit:cover;">
+        </div>
+        {% endif %}
+
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5>
+              <a href="{% url 'blog_detail' post.slug %}" class="text-dark">
+                {{ post.title }}
+              </a>
+            </h5>
+
+            <small class="text-muted d-block mb-2">
+              {{ post.created_at|timesince }} ago | {{ post.author }}
+            </small>
+
+            <p>{{ post.short_description|truncatewords:25 }}</p>
+          </div>
+        </div>
 
       </div>
     </div>
     {% endfor %}
 
-
-    <!-- PAGINATION -->
-    <div class="mt-4 d-flex justify-content-between">
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between">
       {% if posts.has_previous %}
         <a class="btn btn-outline-warning" href="?page={{ posts.previous_page_number }}">Newer</a>
       {% endif %}
@@ -95,28 +101,32 @@
   </div>
 
 
-  <!-- SIDEBAR -->
-  <aside class="col-lg-4 col-md-12 mt-4 mt-lg-0 blog-sidebar">
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="col-lg-4 mt-4 mt-lg-0">
 
     <!-- ABOUT -->
-    <div class="sidebar-box mb-4">
-      <h5>{{ about.about_heading }}</h5>
-      <p>{{ about.about_description }}</p>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5>{{ about.about_heading }}</h5>
+        <p>{{ about.about_description }}</p>
+      </div>
     </div>
 
-    <!-- SOCIAL -->
+    <!-- FOLLOW -->
     {% if social_links %}
-    <div class="sidebar-box">
-      <h5>Follow Us</h5>
-      <ul class="list-unstyled">
-        {% for link in social_links %}
-        <li>
-          <a href="{{ link.link }}" target="_blank">
-            {{ link.platform }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
+    <div class="card">
+      <div class="card-body">
+        <h5>Follow Us</h5>
+        <ul class="list-unstyled mb-0">
+          {% for link in social_links %}
+          <li>
+            <a href="{{ link.link }}" target="_blank">
+              {{ link.platform }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
     {% endif %}
 
