@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Count, Q
 
+
 def posts_by_category(request, slug):
     category = Category.objects.filter(slug=slug).first()
     if not category:
@@ -15,9 +16,9 @@ def posts_by_category(request, slug):
         status=Status.PUBLISHED, category__slug=slug
     )
     categories = Category.objects.annotate(
-        post_count=Count('blogs', filter=Q(blogs__status=Status.PUBLISHED))
+        post_count=Count("blogs", filter=Q(blogs__status=Status.PUBLISHED))
     ).filter(post_count__gt=0)
-   
+
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
@@ -38,22 +39,31 @@ def blog_detail(request, slug):
         status=Status.PUBLISHED,
     )
     categories = Category.objects.annotate(
-         post_count=Count('blogs', filter=Q(blogs__status=Status.PUBLISHED))
+        post_count=Count("blogs", filter=Q(blogs__status=Status.PUBLISHED))
     ).filter(post_count__gt=0)
-    if request.method == "POST":
-        comment = Comment()
-        if request.user.is_authenticated:
-            comment.user = request.user
-        else:
-            return redirect(f"/login/?next={request.path}")
-        comment.blog = single_blog
-        content = request.POST.get("comment", "").strip()
-        if content:
-            comment.comment = content
-            messages.success(request, "Comment submitted for approval")
-            comment.save()
 
+    ## Handle comment submission
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect(f"/login/?next={request.path}")
+        content = request.POST.get("comment", "").strip()
+        # Validation FIRST
+        if not content:
+            messages.error(request, "Comment cannot be empty")
+            return HttpResponseRedirect(request.path_info)
+
+        if len(content) < 3:
+            messages.error(request, "Comment must be at least 3 characters")
+            return HttpResponseRedirect(request.path_info)
+
+        # Save comment
+        Comment.objects.create(
+            user=request.user, blog=single_blog, comment=content, is_approved=True
+        )
+
+        messages.success(request, "Comment added successfully!")
         return HttpResponseRedirect(request.path_info)
+
     # comment section
     comments = (
         Comment.objects.select_related("user")
@@ -71,9 +81,13 @@ def blog_detail(request, slug):
 def blog_search(request):
     keyword = request.GET.get("keyword").strip()
     if keyword:
-        blogs = Blog.objects.annotate(
-            search=SearchVector("title", "short_description", "blog_body"),
-        ).filter(search=keyword, status=Status.PUBLISHED).select_for_update("category", "author")
+        blogs = (
+            Blog.objects.annotate(
+                search=SearchVector("title", "short_description", "blog_body"),
+            )
+            .filter(search=keyword, status=Status.PUBLISHED)
+            .select_for_update("category", "author")
+        )
     else:
         blogs = Blog.objects.none()
 
@@ -85,6 +99,7 @@ def blog_search(request):
         "keyword": keyword,
     }
     return render(request, "blog_search.html", context)
+
 
 def all_categories(request):
     categories = Category.objects.all()
