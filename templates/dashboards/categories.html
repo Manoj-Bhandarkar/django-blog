@@ -29,9 +29,9 @@
                     <td>{{category.created_at}}</td>
                     <td>{{category.updated_at}}</td>
                     <td>
-                        <a href="{% url 'edit_category' category.slug %}"><i
+                        <a href="{% url 'edit_category' category.pk %}"><i
                                 class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
-                        <form action="{% url 'delete_category' category.slug %}" method="POST" style="display:inline;"
+                        <form action="{% url 'delete_category' category.pk %}" method="POST" style="display:inline;"
                             onsubmit="return confirm('Are you sure?');">
                             {% csrf_token %}
                             <button type="submit" style="background:none; border:none; padding:0;">

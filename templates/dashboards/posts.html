@@ -34,7 +34,7 @@
                     <td>
                         <a href="{% url 'edit_post' post.pk %}"><i class="fa fa-edit text-success"></i></a>&nbsp;&nbsp;
                     <td>
-                        <form action="{% url 'delete_user' user.slug %}" method="POST"
+                        <form action="{% url 'delete_user' user.pk %}" method="POST"
                             onsubmit="return confirm('Are you sure?');">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
