@@ -19,6 +19,5 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-static/
 /media
 /staticfiles/
