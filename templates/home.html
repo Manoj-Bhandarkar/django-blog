@@ -105,6 +105,24 @@
   <!-- RIGHT: SIDEBAR -->
   <aside class="col-lg-4 mt-4 mt-lg-0">
 
+    <!-- Category name and count  -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="mb-3">Categories</h5>
+        <ul class="list-unstyled mb-0">
+          {% for cat in categories %}
+          <li class="d-flex justify-content-between align-items-center py-2">
+            <a href="{% url 'posts_by_category' cat.slug %}" class="text-dark">
+              {{ cat.category_name }}
+            </a>
+            <span class="badge badge-pill badge-warning category-count">
+              {{ cat.post_count }}
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
     <!-- ABOUT -->
     <div class="card mb-3">
       <div class="card-body">

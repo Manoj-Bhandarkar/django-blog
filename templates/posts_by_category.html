@@ -1,25 +1,91 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if category.id %}
-<!-- Category-wise Posts Section -->
-<h3 class="text-uppercase text-warning p-2" style="letter-spacing: 2px;">Category - {{ category }}</h3>
-<div class="row mb-2">
 
-    <div class="col-md-6">
-        <div class="card border-0">
-            <div class="card-body">
-                {% if posts %}
-                {% for post in posts %}
-                <h3><a href="{% url 'blog_detail' post.slug %}" class="text-dark">{{ post.title }}</a></h3>
-                <small class="mb-1 text-muted">{{ post.created_at | timesince }} ago | {{ post.author }}</small>
-                <p class="card-text">{{ post.short_description|truncatewords:20 }}</p>
-                {% endfor %}
-                {% else %}
-                <p>No posts Found in this category.</p>
+{% if category.id %}
+<h3 class="text-uppercase text-warning p-2 mb-4" style="letter-spacing: 2px; border-bottom: 2px solid #ffc107;">
+    Category - {{ category }}
+</h3>
+
+<div class="row">
+    <div class="col-lg-8">
+        {% if posts %}
+        {% for post in posts %}
+        <!-- This is the Horizontal Card Style from Home -->
+        <div class="card mb-3 border-0 shadow-sm">
+            <div class="row no-gutters">
+
+                {% if post.featured_image %}
+                <div class="col-md-4">
+                    <img src="{{ post.featured_image.url }}" class="img-fluid h-100"
+                        style="object-fit:cover; min-height: 150px;">
+                </div>
                 {% endif %}
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5>
+                            <a href="{% url 'blog_detail' post.slug %}" class="text-dark font-weight-bold">
+                                {{ post.title }}
+                            </a>
+                        </h5>
+
+                        <small class="text-muted d-block mb-2">
+                            {{ post.created_at|timesince }} ago | {{ post.author }}
+                        </small>
+
+                        <p class="card-text text-secondary">
+                            {{ post.short_description|truncatewords:25 }}
+                        </p>
+
+                        <a href="{% url 'blog_detail' post.slug %}" class="btn btn-sm btn-outline-warning">Read More</a>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-light">No posts found in this category.</div>
+        {% endif %}
     </div>
+
+    <!-- Optional: Add Sidebar here if you want it to look exactly like Home -->
+
+    <aside class="col-lg-4 mt-4 mt-lg-0">
+        <!-- category count -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <!-- This shows how many posts are in the category the user clicked -->
+                <h5 class="mb-0">Posts in <strong>{{ category.category_name }}: {{ category.post_count }}</strong></h5>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>{{ about.about_heading }}</h5>
+                <p>{{ about.about_description }}</p>
+            </div>
+        </div>
+
+        <!-- FOLLOW -->
+        {% if social_links %}
+        <div class="card">
+            <div class="card-body">
+                <h5>Follow Us</h5>
+                <ul class="list-unstyled mb-0">
+                    {% for link in social_links %}
+                    <li>
+                        <a href="{{ link.link }}" target="_blank">
+                            {{ link.platform }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+    </aside>
 
 </div>
 {% endif %}

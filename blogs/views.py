@@ -5,13 +5,18 @@ from .models import Blog, Category, Comment, Status
 from django.core.paginator import Paginator
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Count, Q, Prefetch
+from about.models import About
 
 
 def posts_by_category(request, slug):
-    category = Category.objects.filter(slug=slug).first()
+    category = (
+        Category.objects.filter(slug=slug)
+        .annotate(post_count=Count("blogs", filter=Q(blogs__status=Status.PUBLISHED)))
+        .first()
+    )
     if not category:
         return render(request, "404.html", status=404)
-
+    
     posts = Blog.objects.select_related("category", "author").filter(
         status=Status.PUBLISHED, category__slug=slug
     )
@@ -22,10 +27,13 @@ def posts_by_category(request, slug):
     paginator = Paginator(posts, 5)
     page = request.GET.get("page")
     posts = paginator.get_page(page)
+
+    about = About.objects.first()
     context = {
         "posts": posts,
         "category": category,
         "categories": categories,
+        "about": about,
     }
     return render(request, "posts_by_category.html", context)
 
@@ -68,10 +76,11 @@ def blog_detail(request, slug):
 
         messages.success(request, "Comment added successfully!")
         return HttpResponseRedirect(request.path_info)
-
+    about = About.objects.first()
     context = {
         "single_blog": single_blog,
         "categories": categories,
+        "about": about,
     }
     return render(request, "blog_detail.html", context)
 
@@ -84,7 +93,7 @@ def blog_search(request):
                 search=SearchVector("title", "short_description", "blog_body"),
             )
             .filter(search=keyword, status=Status.PUBLISHED)
-            .select_for_update("category", "author")
+            .select_related("category", "author")
         )
     else:
         blogs = Blog.objects.none()
