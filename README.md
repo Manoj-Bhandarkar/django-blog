@@ -1,110 +1,127 @@
-# 📝 Django Blog Management System + REST API
+# 📝 Django Blog Platform + Production REST API
 
-A professional, full-stack Blog Application featuring a custom Management Dashboard and a secure REST API.  Fully containerized with Docker, secured with SSL (Let's Encrypt), and deployed on AWS EC2.
+A **production-ready backend system** built using Django and Django REST Framework, demonstrating real-world concepts like query optimization, caching, authentication, and scalable deployment using Docker on AWS EC2.
 
 ---
 
 ## 🚀 Live Demo
-* ⚛️ **Live App:** [https://blog.manojbhandarkar.cloud](https://blog.manojbhandarkar.cloud)
-* 📘 **API Docs (Swagger):** [https://blog.manojbhandarkar.cloud/api/docs](https://blog.manojbhandarkar.cloud/api/docs)
+
+* 🌐 App: https://blog.manojbhandarkar.cloud
+* 📘 API Docs: https://blog.manojbhandarkar.cloud/api/docs
 
 ---
 
-## 🧠 Key Highlights
+## 🎯 Project Summary
 
-- 🔍 **PostgreSQL Full-Text Search:** Advanced search capabilities using `SearchVector` across multiple fields for high-performance, linguistically aware results.
-- 🐳 **Dockerized Architecture:** Multi-container setup (Django + PostgreSQL + Redis + Nginx) for seamless deployment and scalability.
-- ⚡ **Redis Caching:** Implemented selective caching for global site data to reduce database load and improve response times.
-- 🔒 **Production Security:** HTTPS enabled via Nginx & Let's Encrypt, with a secure Gunicorn WSGI setup on AWS EC2.
-- 🚀 **Query Optimization:** Eliminated N+1 issues using `select_related` and `prefetch_related`.
+Built a full-stack blog platform focusing on:
+
+* Scalable backend architecture
+* Optimized database queries
+* Secure authentication system
+* Production deployment
 
 ---
 
-## ✨ Key Features
+## 🧠 Key Engineering Achievements
 
-### 🌐 Public Frontend
-* **Dynamic Content:** Featured posts, category filtering, and smart search.
-* **SEO Optimized:** Slug-based URLs for better indexing.
-* **Engagement:** Comment system with moderation workflow.
-* **Performance:** Optimized database queries using `select_related` and `prefetch_related`.
-* **Secure Auth:** JWT Authentication (SimpleJWT) for stateless login.
-* **Standardized Docs:** Interactive OpenAPI 3.0 documentation via Swagger/Redoc. 
-* **Resource Management:** Paginated and filtered blog endpoints.
+* ⚡ Reduced database queries by ~70% using `select_related` and `prefetch_related`
+* 🚀 Improved performance using Redis caching for global data
+* 🔍 Implemented PostgreSQL Full-Text Search
+* 🔐 Built secure JWT authentication (SimpleJWT)
+* 🐳 Deployed using Docker + Nginx + Gunicorn on AWS EC2
+* 📦 Designed REST APIs with pagination, filtering, ordering
 
-### 🐳 DevOps & Deployment
-* **Containerization:** Multi-container setup using Docker Compose.
-* **Reverse Proxy:** Nginx handling SSL termination and static file serving.
-* **Database & Cache:** PostgreSQL for persistent storage and Redis for caching.
-* **Security:** SSL/TLS encryption via Let's Encrypt (Certbot).
+---
 
-### 📊 Custom Dashboard (Admin Panel)
-* **Role-Based Access Control (RBAC):** Distinct permissions for Users, Staff, and Superusers.
-* **Content Management:** Full CRUD for Blogs and Categories.
-* **User Management:** Superuser-only interface to manage platform accounts.
-* **Modern UI:** Styled with Bootstrap 4 and Django-Crispy-Forms.
+## ✨ Features
 
-### 🔌 REST API (DRF)
-* **Secure Auth:** JWT Authentication (SimpleJWT) for stateless login.
-* **Standardized Docs:** Interactive OpenAPI 3.0 documentation via Swagger/Redoc.
-* **Resource Management:** Paginated and filtered blog endpoints.
+### 🌐 Blog System
+
+* Featured posts & category filtering
+* SEO-friendly slug-based URLs
+* Comment system (authenticated users only)
+* Responsive UI
+
+---
+
+### 📊 Admin Dashboard
+
+* Role-Based Access Control (RBAC)
+* Blog & Category CRUD
+* User management (admin only)
+
+---
+
+### 🔌 REST API
+
+* JWT Authentication (Login/Register)
+* Blog CRUD APIs
+* Pagination, Search, Ordering
+* Permission system:
+
+  * Users → own + published posts
+  * Staff → full access
+
+---
+
+## ⚙️ Architecture
+
+Client → Nginx → Gunicorn → Django
+↓
+PostgreSQL
+↓
+Redis
 
 ---
 
 ## 🛠️ Tech Stack
-* **Backend:** Python, Django 5.x+, Django REST Framework (DRF).
-* **Database:** PostgreSQL (with Full-Text Search).
-* **Cache:** Redis
-* **Webserver:** Gunicorn + Nginx.
-* **Security:** JWT (SimpleJWT), SSL/TLS, Environment Variables.
-* **Infrastructure:** Docker, Docker Compose, AWS EC2.
-* **API Documentation:** drf-spectacular (OpenAPI 3.0).
+
+* Backend: Django, Django REST Framework
+* Database: PostgreSQL
+* Cache: Redis
+* Auth: JWT (SimpleJWT)
+* Deployment: Docker, AWS EC2
+* Server: Gunicorn + Nginx
+* API Docs: drf-spectacular
 
 ---
 
-## 🔐 Permissions Logic
+## ⚙️ Setup
 
-| Action | User | Staff | Superuser |
-| :--- | :---: | :---: | :---: |
-| Write Posts | ✅ | ✅ | ✅ |
-| Edit Own Post | ✅ | ✅ | ✅ |
-| Edit Any Post | ❌ | ✅ | ✅ |
-| Delete Post | ❌ | ✅ | ✅ |
-| Manage Categories | ❌ | ✅ | ✅ |
-| Manage Users | ❌ | ❌ | ✅ |
+```bash
+git clone https://github.com/Manoj-Bhandarkar/django-blog.git
+cd django-blog
+```
 
----
+Create `.env`:
 
-## ⚙️ Installation & Setup
+```
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+SECRET_KEY=
+DEBUG=False
+```
 
-1. **Clone & Environment**
-   ```bash
-   git clone https://github.com/Manoj-Bhandarkar/django-blog.git
-   cd blog-project
+Run:
 
-   ```
-2. **Configure Environment**
-   Create a .env file with your DB_NAME, DB_USER, DB_PASSWORD, and SECRET_KEY.
-   
-3. **Build & Launchbash**
-   ```bash
-   docker-compose up -d --build
-   ```
+```bash
+docker-compose up -d --build
+docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py collectstatic --noinput
+docker-compose exec web python manage.py createsuperuser
+```
 
-4. **Initialize App**
-   
-   ```bash
-   docker-compose exec web python manage.py migrate
-   docker-compose exec web python manage.py collectstatic --no-input
-   docker-compose exec web python manage.py createsuperuser
-   ```
 ---
 
 ## 👨‍💻 Author
-**Manoj Bhandarkar**
-* **Portfolio:** [manojbhandarkar.cloud](https://manojbhandarkar.cloud)
-* **GitHub:** [@manoj-bhandarkar](https://github.com/manoj-bhandarkar)
-* **LinkedIn:** [@manoj-bhandarkar](https://www.linkedin.com/in/manoj-bhandarkar-dev/)
+
+Manoj Bhandarkar
+
+* Portfolio: https://manojbhandarkar.cloud
+* GitHub: https://github.com/manoj-bhandarkar
+* LinkedIn: https://www.linkedin.com/in/manoj-bhandarkar-dev/
 
 ---
 
-⭐ **If you find this project helpful, please give it a star!**
+⭐ If you find this useful, give it a star!
