@@ -50,7 +50,8 @@ def home(request):
     return render(request, "home.html", context)
 
 def success_view(request):
-    return render(request, "registration_success.html")
+    
+    return render(request, "registration_success.html", {"username": request.user.username})
 
 def register(request):
     if request.method == "POST":
