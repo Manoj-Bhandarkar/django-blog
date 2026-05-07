@@ -39,6 +39,7 @@ urlpatterns = [
     path("blog/<slug:slug>/", blogs_view.blog_detail, name="blog_detail"),
     path("blogs/search/", blogs_view.blog_search, name="blog_search"),
     path("register/", views.register, name="register"),
+    path('success/', views.success_view, name='registration_success'),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     # Dashboard URLs

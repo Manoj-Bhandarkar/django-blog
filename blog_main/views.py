@@ -49,6 +49,8 @@ def home(request):
     }
     return render(request, "home.html", context)
 
+def success_view(request):
+    return render(request, "registration_success.html")
 
 def register(request):
     if request.method == "POST":
@@ -56,7 +58,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect("login")
+            return redirect("registration_success")
     else:
         form = RegistrationForm()
     context = {
